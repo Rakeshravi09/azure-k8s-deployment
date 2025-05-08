@@ -22,3 +22,24 @@ This project demonstrates how to deploy a simple Flask app to Azure Kubernetes S
 - Azure DevOps
 - Flask (Python)
 
+========================================================================================================================
+
+Steps to be followed:
+
+* Need an Azure account (Free trail / pay as you go)
+* Once account is setup reate ACR and AKS 
+
+
+Created ACR using azure cli:
+
+az acr create \
+  --name azurek8sdemoacr \
+  --resource-group azure-k8s-demo \
+  --location eastus \
+  --sku Basic \
+  --admin-enabled true
+
+  Created AKS using azure cli:
+
+  
+
