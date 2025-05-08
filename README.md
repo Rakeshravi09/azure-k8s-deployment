@@ -24,13 +24,12 @@ This project demonstrates how to deploy a simple Flask app to Azure Kubernetes S
 
 ========================================================================================================================
 
-Steps to be followed:
+**Steps to be followed:**
 
 * Need an Azure account (Free trail / pay as you go)
 * Once account is setup reate ACR and AKS 
 
-
-**Created ACR using azure cli:**
+Created azure ACR: 
 
 az acr create \
   --name azurek8sdemoacr \
@@ -39,35 +38,7 @@ az acr create \
   --sku Basic \
   --admin-enabled true
 
-  **Created AKS using azure cli:**
 
-  # Set variables
-RESOURCE_GROUP=azure-k8s-demo
-AKS_NAME=azurek8sdemoaks
-VNET_NAME=aksvnet
-SUBNET_NAME=akssubnet
-LOCATION=eastus
-ACR_NAME=azurek8sdemoacr
-
-
-#GET subnet ID
-az network vnet subnet show \
-  --resource-group azure-k8s-demo \
-  --vnet-name aksvnet \
-  --name akssubnet \
-  --query id -o tsv
-
-
-# Create the AKS cluster
-az aks create \
-  --resource-group $RESOURCE_GROUP \
-  --name $AKS_NAME \
-  --node-count 1 \
-  --enable-private-cluster \
-  --network-plugin azure \
-  --vnet-subnet-id "$SUBNET_ID" \
-  --enable-managed-identity \
-  --attach-acr $ACR_NAME \
   --enable-addons monitoring \
   --generate-ssh-keys \
   --location $LOCATION
