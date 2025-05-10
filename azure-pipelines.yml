@@ -1,0 +1,45 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - main  # Trigger the pipeline on changes to the main branch
+
+pool:
+  name: Default  # Use your self-hosted agent pool
+
+steps:
+# Step 1: Checkout code
+- checkout: self
+  persistCredentials: true
+  displayName: 'Checkout the code from GitHub'
+
+# Step 2: Build and push Docker image to Azure Container Registry
+- task: Docker@2
+  inputs:
+    containerRegistry: 'ACR'  # ACR service connection name
+    repository: 'myflaskapp'
+    dockerfile: '**/Dockerfile'
+    command: 'buildAndPush'
+    tags: |
+      $(Build.BuildId)
+  displayName: 'Build and push Docker image to ACR'
+
+# Step 3: Deploy to Azure Kubernetes Service
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'aks'  # Azure RM service connection
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Deploying to AKS..."
+      az aks get-credentials --resource-group azure-k8s-demo --name rakesh_aks
+      echo "Checking YAML files..."
+      ls -l kubernetes/
+      echo "Applying Kubernetes manifests..."
+      kubectl apply -f kubernetes/deployment.yaml
+      kubectl apply -f kubernetes/service.yaml
+  displayName: 'Deploy to AKS'
