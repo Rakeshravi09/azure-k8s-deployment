@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: <your-container-registry-name>/my-app:latest  # This will be updated dynamically
+        image: rakeshacr.azurecr.io/myflaskapp:latest  # This will be updated dynamically
         ports:
         - containerPort: 5000
