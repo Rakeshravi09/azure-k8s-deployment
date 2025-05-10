@@ -26,6 +26,7 @@ steps:
     command: 'buildAndPush'
     tags: |
       $(Build.BuildId)
+      latest
   displayName: 'Build and push Docker image to ACR'
 
 # Step 3: Deploy to Azure Kubernetes Service
